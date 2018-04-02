@@ -1,20 +1,25 @@
 package com.sainsburys.groceryScraper.domain;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.math.BigDecimal;
-import java.util.ArrayList;
+import java.util.List;
 
 public class ProductList {
 
-    private ArrayList<Product> products;
+    @SerializedName("results")
+    private List<Product> productList;
+
+    @SerializedName("total")
     private BigDecimal totalPrice;
 
-    public ProductList(ArrayList<Product> product, BigDecimal totalPrice) {
-        this.products = products;
+    public ProductList(List<Product> productList, BigDecimal totalPrice) {
+        this.productList = productList;
         this.totalPrice = totalPrice;
     }
 
-    public ArrayList<Product> getProducts() {
-        return products;
+    public List<Product> getProductList() {
+        return productList;
     }
 
     public BigDecimal getTotalPrice() {

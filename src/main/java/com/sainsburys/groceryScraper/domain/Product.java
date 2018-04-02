@@ -1,12 +1,19 @@
 package com.sainsburys.groceryScraper.domain;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.math.BigDecimal;
 
 public class Product {
 
     private String title;
+
+    @SerializedName("kcal_per_100g")
     private Integer kcalPer100g;
+
+    @SerializedName("unit_price")
     private BigDecimal unitPrice;
+
     private String description;
 
     public Product(String title, Integer kcalPer100g, BigDecimal unitPrice, String description) {
