@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.math.BigDecimal;
 
+import static com.sainsburys.groceryScraper.util.TestUtils.unifyLineEndings;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyString;
@@ -34,7 +35,7 @@ public class GroceryScraperTest {
 
     private final static String TEST_URL = "http://some-url.html";
     private final static String EXPECTED_URL = "https://jsainsburyplc.github.io/serverside-test/site/www.sainsburys.co.uk/shop/gb/groceries/berries-cherries-currants/sainsburys-british-strawberries-400g.html";
-    private final static String EXPECTED_LOG_MESSAGE = "Could not complete GroceryScraper due to the following...\r\n";
+    private final static String EXPECTED_LOG_MESSAGE = "Could not complete GroceryScraper due to the following...\n";
     private final static String EXPECTED_IO_EXCEPTION = "java.io.IOException";
     private final static String EXPECTED_RUNTIME_EXCEPTION = "java.lang.RuntimeException";
     private final static String EXPECTED_USAGE = "GroceryScraper requires a URL as an argument";
@@ -130,7 +131,7 @@ public class GroceryScraperTest {
     }
 
     private void thenTheErrorIsReportedToTheConsole(String expectedException) {
-        assertEquals(EXPECTED_LOG_MESSAGE, systemOut.toString());
+        assertEquals(EXPECTED_LOG_MESSAGE, unifyLineEndings(systemOut.toString()));
         assertTrue(systemErr.toString().contains(expectedException));
     }
 

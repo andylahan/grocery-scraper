@@ -13,6 +13,7 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.sainsburys.groceryScraper.util.TestUtils.unifyLineEndings;
 import static org.junit.Assert.assertEquals;
 
 public class ProductListConsoleWriterTest {
@@ -37,7 +38,7 @@ public class ProductListConsoleWriterTest {
             "    }\n" +
             "  ],\n" +
             "  \"total\": 2.99\n" +
-            "}\r\n";
+            "}\n";
 
     @Before
     public void setup() {
@@ -70,6 +71,6 @@ public class ProductListConsoleWriterTest {
 
     private void thentheCorrectOutputWasWritten(String expectedOutput) {
         String result = systemOut.toString();
-        assertEquals(expectedOutput,result);
+        assertEquals(expectedOutput,unifyLineEndings(result));
     }
 }

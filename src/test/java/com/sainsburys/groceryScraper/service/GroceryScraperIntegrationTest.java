@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 
 import static java.nio.file.Files.readAllBytes;
 import static org.junit.Assert.assertEquals;
+import static com.sainsburys.groceryScraper.util.TestUtils.unifyLineEndings;
 
 public class GroceryScraperIntegrationTest {
 
@@ -51,9 +52,5 @@ public class GroceryScraperIntegrationTest {
 
         assertEquals(unifyLineEndings(expectedOutput),
                 unifyLineEndings(systemOut.toString()));
-    }
-
-    private String unifyLineEndings(String inputString) {
-        return inputString.replaceAll("(\r\n|\r|\n)", "\n");
     }
 }
