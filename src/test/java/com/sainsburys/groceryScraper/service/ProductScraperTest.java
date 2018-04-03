@@ -29,8 +29,10 @@ public class ProductScraperTest {
     private static final String TEST_URL = "http://some-test-url";
     private static final String EXPECTED_TITLE = "Sainsbury's Strawberries 400g";
     private static final Integer EXPECTED_CALORIES = 33;
+    private static final Integer EXPECTED_V2_KCALS = 52;
     private static final BigDecimal EXPECTED_VALUE = new BigDecimal(1.75);
     private static final String EXPECTED_DESCRIPTION = "by Sainsbury's strawberries";
+
     private Connection connection = mock(Connection.class);
     private Product product;
 
@@ -65,6 +67,14 @@ public class ProductScraperTest {
     public void scrapeProductWithUnexpectedFormatting() {
         givenAnInvalidProductPage();
         whenTheProductDataIsScraped();
+        thenTheCorrectKCalValueIsRetrieved();
+    }
+
+    @Test
+    public void scrapeProductWithV2NutritionTable() {
+        givenAValidProductPageWithV2NutritionTable();
+        whenTheProductDataIsScraped();
+        thenTheCorrectKCalValueIsRetrieved();
     }
 
     private void givenAValidProductPage() {
@@ -81,6 +91,10 @@ public class ProductScraperTest {
 
     private void givenAnInvalidProductPage() {
         setupResponse("invalid_product_page.html");
+    }
+
+    private void givenAValidProductPageWithV2NutritionTable() {
+        setupResponse("valid_product_page_nutrition_table_v2.html");
     }
 
     private void givenConnectingThrowsIOException() {
@@ -109,6 +123,10 @@ public class ProductScraperTest {
         assertNull(product.getKcalPer100g());
         assertEquals(EXPECTED_VALUE, product.getUnitPrice());
         assertEquals(EXPECTED_DESCRIPTION, product.getDescription());
+    }
+
+    private void thenTheCorrectKCalValueIsRetrieved() {
+        assertEquals(EXPECTED_V2_KCALS,product.getKcalPer100g());
     }
 
     private void setupResponse(String filename)  {

@@ -6,7 +6,6 @@ import com.sainsburys.groceryScraper.exception.ProductDetailsRetrievalException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -49,18 +48,24 @@ public class ProductScraper {
     private static Integer getKCals(Document document) {
         try {
             Element nutritionTable = document.selectFirst("table.nutritionTable");
-            Elements rows = nutritionTable.select("tr");
+            Integer kcals = kcalFromV1NutritionTable(nutritionTable);
 
-            for (Element row : rows) {
-                Elements columns = row.select("td");
-                if (columns.size() > 0 && columns.get(0).text().contains("kcal")) {
-                    String kcals = columns.get(0).text();
-                    return Integer.parseInt(kcals.replaceAll("[^\\d]", ""));
-                }
-            }
-            return null;
+            return kcals == null ? kcalfromV2NutritionTable(nutritionTable) : kcals;
+
         } catch(Exception e) {
             return null;
         }
+    }
+
+    private static Integer kcalFromV1NutritionTable(Element nutritionTable) {
+        try{
+            return Integer.parseInt(nutritionTable.select("td:contains(kcal)").first().text().replaceAll("[^\\d]", ""));
+        } catch(Exception e) {
+            return null;
+        }
+    }
+
+    private static Integer kcalfromV2NutritionTable(Element nutritionTable) {
+        return Integer.parseInt(nutritionTable.select("tr:contains(kcal)").select("td").first().text());
     }
 }
