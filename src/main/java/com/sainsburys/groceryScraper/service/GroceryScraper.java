@@ -22,8 +22,7 @@ public class GroceryScraper {
             List<Product> products = new ArrayList<>();
             BigDecimal totalPrice = BigDecimal.ZERO;
             for(Element element : elements) {
-                Element infoLink = element.selectFirst("a[href]");
-                String productInfoURL = getProductInfoUri(infoLink);
+                String productInfoURL = element.selectFirst("a[href]").attr("abs:href");
                 Product product = ProductScraper.scrapeProductInformation(productInfoURL);
                 totalPrice = totalPrice.add(product.getUnitPrice());
                 products.add(product);
@@ -38,11 +37,6 @@ public class GroceryScraper {
             System.out.println("Could not complete GroceryScraper due to the following...");
             e.printStackTrace();
         }
-    }
-
-    private String getProductInfoUri(Element element) {
-        String productInfoUri = element.attr("href");
-        return productInfoUri.replace("../../../../../../","https://jsainsburyplc.github.io/serverside-test/site/www.sainsburys.co.uk/");
     }
 
     public static void main(String args[]) {

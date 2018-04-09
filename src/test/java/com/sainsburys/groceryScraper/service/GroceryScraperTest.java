@@ -34,14 +34,14 @@ public class GroceryScraperTest {
     private final ByteArrayOutputStream systemErr = new ByteArrayOutputStream();
 
     private final static String TEST_URL = "http://some-url.html";
-    private final static String EXPECTED_URL = "https://jsainsburyplc.github.io/serverside-test/site/www.sainsburys.co.uk/shop/gb/groceries/berries-cherries-currants/sainsburys-british-strawberries-400g.html";
+    private final static String EXPECTED_URL = "https://jsainsburyplc.github.io/../shop/gb/groceries/berries-cherries-currants/sainsburys-british-strawberries-400g.html";
     private final static String EXPECTED_LOG_MESSAGE = "Could not complete GroceryScraper due to the following...\n";
     private final static String EXPECTED_IO_EXCEPTION = "java.io.IOException";
     private final static String EXPECTED_RUNTIME_EXCEPTION = "java.lang.RuntimeException";
     private final static String EXPECTED_USAGE = "GroceryScraper requires a URL as an argument";
 
     @Test
-    public void callsCorrectProductURI() {
+    public void callsProductURL() {
         givenAValidSummaryPage();
         givenAProductScraper();
         whenThePageIsScraped();
@@ -49,7 +49,7 @@ public class GroceryScraperTest {
     }
 
     @Test
-    public void exceptionCallingURI() {
+    public void exceptionCallingURL() {
         givenConnectingThrowsIOException();
         givenAConsoleOutputStream();
         whenThePageIsScraped();
@@ -81,7 +81,7 @@ public class GroceryScraperTest {
     private void givenAValidSummaryPage() {
         try {
             File file = new File(getClass().getClassLoader().getResource("valid_summary_page.html").getFile());
-            Document doc = Jsoup.parse(file, "UTF-8");
+            Document doc = Jsoup.parse(file, "UTF-8", "https://jsainsburyplc.github.io/serverside-test/site/www.sainsburys.co.uk/");
 
             PowerMockito.mockStatic(Jsoup.class);
             PowerMockito.when(Jsoup.connect(anyString())).thenReturn(connection);
